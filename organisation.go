@@ -28,19 +28,6 @@ func (q *OrganisationQuery) Build() (*OrganisationQuery, error) {
 	return q, nil
 }
 
-func (q *OrganisationQuery) get() (*apihelper.ApiQuery, error) {
-	if q.query == nil {
-		if _, err := q.Build(); err != nil {
-			return nil, err
-		}
-	}
-
-	query, err := q.query.Call()
-	if !query.ResponsOK() {
-		return nil, err
-	}
-	return query, nil
-}
 func (q *OrganisationQuery) GetSingle() (*OrgLevelOrganisation, error) {
 	if q.query == nil {
 		if _, err := q.Build(); err != nil {

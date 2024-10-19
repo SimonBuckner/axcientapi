@@ -28,7 +28,6 @@ func (q *DeviceQuery) SelectByDeviceId(deviceId int64) *DeviceQuery {
 	q.deviceId = &deviceId
 	return q
 }
-
 func (q *DeviceQuery) SetLimit(limit int64) *DeviceQuery {
 	q.limit = &limit
 	return q
@@ -37,7 +36,6 @@ func (q *DeviceQuery) SetOffset(offset int64) *DeviceQuery {
 	q.offset = &offset
 	return q
 }
-
 func (q *DeviceQuery) Build() (*DeviceQuery, error) {
 
 	endpoint := "device"
@@ -60,7 +58,6 @@ func (q *DeviceQuery) Build() (*DeviceQuery, error) {
 	q.query = query
 	return q, nil
 }
-
 func (q *DeviceQuery) GetAll() ([]OrgLevelDevice, error) {
 	if q.query == nil {
 		if _, err := q.Build(); err != nil {
@@ -71,7 +68,6 @@ func (q *DeviceQuery) GetAll() ([]OrgLevelDevice, error) {
 	err := q.query.Get(&out)
 	return out, err
 }
-
 func (q *DeviceQuery) GetSingle() (*OrgLevelDevice, error) {
 	if q.query == nil {
 		if _, err := q.Build(); err != nil {
@@ -98,12 +94,10 @@ func newDeviceAutoverifyQuery(api *AxcientApi) *DeviceAutoverifyQuery {
 		api: api,
 	}
 }
-
 func (q *DeviceAutoverifyQuery) SelectByDeviceId(deviceId int64) *DeviceAutoverifyQuery {
 	q.deviceId = &deviceId
 	return q
 }
-
 func (q *DeviceAutoverifyQuery) Build() (*DeviceAutoverifyQuery, error) {
 
 	endpoint := "device"
@@ -119,7 +113,6 @@ func (q *DeviceAutoverifyQuery) Build() (*DeviceAutoverifyQuery, error) {
 	q.query = query
 	return q, nil
 }
-
 func (q *DeviceAutoverifyQuery) get() (*apihelper.ApiQuery, error) {
 	if q.query == nil {
 		if _, err := q.Build(); err != nil {
@@ -133,7 +126,6 @@ func (q *DeviceAutoverifyQuery) get() (*apihelper.ApiQuery, error) {
 	}
 	return query, nil
 }
-
 func (q *DeviceAutoverifyQuery) GetAll() ([]OrgLevelMachineAutoverifyDetails, error) {
 
 	query, err := q.get()
@@ -164,12 +156,10 @@ func newDeviceRestorePointQuery(api *AxcientApi) *DeviceRestorePointQuery {
 		api: api,
 	}
 }
-
 func (q *DeviceRestorePointQuery) SelectByDeviceId(deviceId int64) *DeviceRestorePointQuery {
 	q.deviceId = &deviceId
 	return q
 }
-
 func (q *DeviceRestorePointQuery) Build() (*DeviceRestorePointQuery, error) {
 
 	endpoint := "device"

@@ -50,21 +50,6 @@ func (q *ClientQuery) Build() (*ClientQuery, error) {
 	q.query = query
 	return q, nil
 }
-
-// func (q *ClientQuery) get() (*apihelper.ApiQuery, error) {
-// 	if q.query == nil {
-// 		if _, err := q.Build(); err != nil {
-// 			return nil, err
-// 		}
-// 	}
-
-// 	query, err := q.query.Call()
-// 	if !query.ResponsOK() {
-// 		return nil, err
-// 	}
-// 	return query, nil
-
-// }
 func (q *ClientQuery) GetAll() ([]OrgLevelClient, error) {
 	if q.query == nil {
 		if _, err := q.Build(); err != nil {

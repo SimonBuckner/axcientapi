@@ -21,7 +21,6 @@ func (api *AxcientApi) Authenticate(apiKey string) error {
 }
 
 // Vault Queries
-
 func (api *AxcientApi) GetVaults() *VaultsQuery {
 	return newVaultsQuery(api)
 }
@@ -35,22 +34,6 @@ func (api *AxcientApi) GetDevices() *DeviceQuery {
 	return newDeviceQuery(api)
 }
 
-// func (api *AxcientApiewOrganisationQuery() *OrganisationQuery {
-// 	return newOrganisationQuery(api)
-// }
-
-// Job Queries
-
-// Client Queries
-
-func (api *AxcientApi) GetClients() *ClientQuery {
-	return newClientQuery(api)
-}
-
-func (api *AxcientApi) GetClientDevices() *ClientDeviceQuery {
-	return newClientDeviceQuery(api)
-}
-
 func (api *AxcientApi) GetDeviceAutoverifyDetails() *DeviceAutoverifyQuery {
 	return newDeviceAutoverifyQuery(api)
 }
@@ -59,14 +42,32 @@ func (api *AxcientApi) GetDeviceRestorePoints() *DeviceRestorePointQuery {
 	return newDeviceRestorePointQuery(api)
 }
 
-// Appliance Queries
-func (api *AxcientApi) GetAppliance() *ApplianceQuery {
-	return newApplianceQuery(api)
+// Client Queries
+func (api *AxcientApi) GetClients() *ClientQuery {
+	return newClientQuery(api)
+}
+
+func (api *AxcientApi) GetClientDevices() *ClientDeviceQuery {
+	return newClientDeviceQuery(api)
+}
+
+// Job Queries
+func (api *AxcientApi) GetJobs() *JobQuery {
+	return newJobQuery(api)
+}
+
+func (api *AxcientApi) GetJobHistory() *JobHistoryQuery {
+	return newJobHistoryQuery(api)
 }
 
 // Organisation Queries
 func (api *AxcientApi) GetOrganisation() *OrganisationQuery {
 	return newOrganisationQuery(api)
+}
+
+// Appliance Queries
+func (api *AxcientApi) GetAppliance() *ApplianceQuery {
+	return newApplianceQuery(api)
 }
 
 // D2C Agent Queries
