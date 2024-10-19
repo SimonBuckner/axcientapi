@@ -68,46 +68,24 @@ func (q *ApplianceQuery) Build() (*ApplianceQuery, error) {
 	return q, nil
 }
 
-func (q *ApplianceQuery) get() (*apihelper.ApiQuery, error) {
+func (q *ApplianceQuery) GetAll() ([]OrgLevelAppliance, error) {
 	if q.query == nil {
 		if _, err := q.Build(); err != nil {
 			return nil, err
 		}
 	}
-
-	query, err := q.query.Call()
-	if !query.ResponsOK() {
-		return nil, err
-	}
-	return query, nil
-
-}
-func (q *ApplianceQuery) GetAll() ([]OrgLevelAppliance, error) {
-	query, err := q.get()
-	if err != nil {
-		return nil, err
-	}
-
 	var out []OrgLevelAppliance
-
-	if err := query.DecodeJsonBody(&out); err != nil {
-		return nil, err
-	}
-
-	return out, nil
+	err := q.query.Get(&out)
+	return out, err
 }
 
 func (q *ApplianceQuery) GetSingle() (*OrgLevelAppliance, error) {
-	query, err := q.get()
-	if err != nil {
-		return nil, err
+	if q.query == nil {
+		if _, err := q.Build(); err != nil {
+			return nil, err
+		}
 	}
-
 	var out OrgLevelAppliance
-
-	if err := query.DecodeJsonBody(&out); err != nil {
-		return nil, err
-	}
-
-	return &out, nil
+	err := q.query.Get(&out)
+	return &out, err
 }

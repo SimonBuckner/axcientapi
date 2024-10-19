@@ -25,99 +25,99 @@ func main() {
 	apiKey := os.Getenv("API_KEY")
 	vaultId := apihelper.StringtoI64(os.Getenv("VAULT_ID"))
 	clientId := apihelper.StringtoI64(os.Getenv("CLIENT_ID"))
-	// deviceId := apihelper.StringtoI64(os.Getenv("DEVICE_ID"))
+	deviceId := apihelper.StringtoI64(os.Getenv("DEVICE_ID"))
 
 	axcient := axcient.NewAxcientApi(baseUrl, true, true)
 	axcient.Authenticate(apiKey)
 
-	// printBanner("Get All Vaults")
+	printBanner("Get All Vaults")
 
-	// allVaults, err := axcient.GetVaults().SetIncludeDevices(true).GetAll()
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// dump.Print(allVaults)
+	allVaults, err := axcient.GetVaults().SetIncludeDevices(true).GetAll()
+	if err != nil {
+		panic(err)
+	}
+	dump.Print(allVaults)
 
-	// printBanner("Get Specific Vault")
+	printBanner("Get Specific Vault")
 
-	// singleVault, err := axcient.GetVaults().
-	// 	SelectByVaultId(vaultId).
-	// 	GetSingle()
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// dump.Print(singleVault)
+	singleVault, err := axcient.GetVaults().
+		SelectByVaultId(vaultId).
+		GetSingle()
+	if err != nil {
+		panic(err)
+	}
+	dump.Print(singleVault)
 
-	// printBanner("Get Specific Vault Threshold Connectivity")
+	printBanner("Get Specific Vault Threshold Connectivity")
 
-	// singleVaultThreshold, err := axcient.GetVaultVaultThresholdConnectivity(vaultId).
-	// 	GetSingle()
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// dump.Print(singleVaultThreshold)
+	singleVaultThreshold, err := axcient.GetVaultVaultThresholdConnectivity(vaultId).
+		GetSingle()
+	if err != nil {
+		panic(err)
+	}
+	dump.Print(singleVaultThreshold)
 
-	// printBanner("Get All Clients")
+	printBanner("Get All Clients")
 
-	// allClients, err := axcient.GetClients().SetIncludeAppliances(true).GetAll()
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// dump.Print(allClients)
+	allClients, err := axcient.GetClients().SetIncludeAppliances(true).GetAll()
+	if err != nil {
+		panic(err)
+	}
+	dump.Print(allClients)
 
-	// printBanner("Get Specific Client")
+	printBanner("Get Specific Client")
 
-	// singleClient, err := axcient.GetClients().
-	// 	SetIncludeAppliances(true).
-	// 	SelectByClientId(clientId).
-	// 	GetSingle()
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// dump.Print(singleClient)
+	singleClient, err := axcient.GetClients().
+		SetIncludeAppliances(true).
+		SelectByClientId(clientId).
+		GetSingle()
+	if err != nil {
+		panic(err)
+	}
+	dump.Print(singleClient)
 
-	// printBanner("Get Specific Client Devices")
+	printBanner("Get Specific Client Devices")
 
-	// clientDevices, err := axcient.GetClientDevices().
-	// 	SelectByClientId(clientId).
-	// 	SetDirect2Cloud(true).
-	// 	GetAll()
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// dump.Print(clientDevices)
+	clientDevices, err := axcient.GetClientDevices().
+		SelectByClientId(clientId).
+		SetDirect2Cloud(true).
+		GetAll()
+	if err != nil {
+		panic(err)
+	}
+	dump.Print(clientDevices)
 
-	// printBanner("Get All Devices")
+	printBanner("Get All Devices")
 
-	// devices, err := axcient.GetDevices().GetAll()
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// dump.Print(devices)
+	devices, err := axcient.GetDevices().GetAll()
+	if err != nil {
+		panic(err)
+	}
+	dump.Print(devices)
 
-	// printBanner("Get Single Device")
+	printBanner("Get Single Device")
 
-	// device, err := axcient.GetDevices().SelectByDeviceId(deviceId).GetSingle()
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// dump.Print(device)
+	device, err := axcient.GetDevices().SelectByDeviceId(deviceId).GetSingle()
+	if err != nil {
+		panic(err)
+	}
+	dump.Print(device)
 
-	// printBanner("Get Single Device Autoverify Details")
+	printBanner("Get Single Device Autoverify Details")
 
-	// autoverify, err := axcient.GetDeviceAutoverifyDetails().SelectByDeviceId(deviceId).GetAll()
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// dump.Print(autoverify)
+	autoverify, err := axcient.GetDeviceAutoverifyDetails().SelectByDeviceId(deviceId).GetAll()
+	if err != nil {
+		panic(err)
+	}
+	dump.Print(autoverify)
 
-	// printBanner("Get Single Device Restore Points")
+	printBanner("Get Single Device Restore Points")
 
-	// restorePoints, err := axcient.GetDeviceRestorePoints().SelectByDeviceId(deviceId).GetAll()
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// dump.Print(restorePoints)
+	restorePoints, err := axcient.GetDeviceRestorePoints().SelectByDeviceId(deviceId).GetAll()
+	if err != nil {
+		panic(err)
+	}
+	dump.Print(restorePoints)
 
 	printBanner("Get Organisation Details")
 

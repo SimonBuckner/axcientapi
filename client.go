@@ -51,48 +51,40 @@ func (q *ClientQuery) Build() (*ClientQuery, error) {
 	return q, nil
 }
 
-func (q *ClientQuery) get() (*apihelper.ApiQuery, error) {
+// func (q *ClientQuery) get() (*apihelper.ApiQuery, error) {
+// 	if q.query == nil {
+// 		if _, err := q.Build(); err != nil {
+// 			return nil, err
+// 		}
+// 	}
+
+// 	query, err := q.query.Call()
+// 	if !query.ResponsOK() {
+// 		return nil, err
+// 	}
+// 	return query, nil
+
+// }
+func (q *ClientQuery) GetAll() ([]OrgLevelClient, error) {
 	if q.query == nil {
 		if _, err := q.Build(); err != nil {
 			return nil, err
 		}
 	}
-
-	query, err := q.query.Call()
-	if !query.ResponsOK() {
-		return nil, err
-	}
-	return query, nil
-
-}
-func (q *ClientQuery) GetAll() ([]OrgLevelClient, error) {
-	query, err := q.get()
-	if err != nil {
-		return nil, err
-	}
-
 	var out []OrgLevelClient
-
-	if err := query.DecodeJsonBody(&out); err != nil {
-		return nil, err
-	}
-
-	return out, nil
+	err := q.query.Get(&out)
+	return out, err
 }
 
 func (q *ClientQuery) GetSingle() (*OrgLevelClient, error) {
-	query, err := q.get()
-	if err != nil {
-		return nil, err
+	if q.query == nil {
+		if _, err := q.Build(); err != nil {
+			return nil, err
+		}
 	}
-
 	var out OrgLevelClient
-
-	if err := query.DecodeJsonBody(&out); err != nil {
-		return nil, err
-	}
-
-	return &out, nil
+	err := q.query.Get(&out)
+	return &out, err
 }
 
 type ClientDeviceQuery struct {
@@ -155,17 +147,7 @@ func (q *ClientDeviceQuery) GetAll() ([]OrgLevelDevice, error) {
 			return nil, err
 		}
 	}
-
-	query, err := q.query.Call()
-	if !query.ResponsOK() {
-		return nil, err
-	}
-
 	var out []OrgLevelDevice
-
-	if err := query.DecodeJsonBody(&out); err != nil {
-		return nil, err
-	}
-
-	return out, nil
+	err := q.query.Get(&out)
+	return out, err
 }

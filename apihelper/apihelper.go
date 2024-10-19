@@ -88,7 +88,7 @@ func (query *ApiQuery) SetDumpResponseBody(state bool) *ApiQuery {
 
 func (query *ApiQuery) Call() (*ApiQuery, error) {
 	if query.request == nil {
-		return nil, fmt.Errorf("Please build the request before calling it")
+		return nil, fmt.Errorf("please build the request before calling it")
 	}
 	if query.dumpRequest {
 		query.DumpRequest()
@@ -131,4 +131,12 @@ func (query *ApiQuery) DumpRespone(dumpBody bool) {
 
 func (query *ApiQuery) ResponsOK() bool {
 	return query.response != nil && query.response.StatusCode == http.StatusOK
+}
+
+func (query *ApiQuery) Get(out any) error {
+	_, err := query.Call()
+	if !query.ResponsOK() {
+		return err
+	}
+	return query.DecodeJsonBody(&out)
 }

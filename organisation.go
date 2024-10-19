@@ -42,16 +42,12 @@ func (q *OrganisationQuery) get() (*apihelper.ApiQuery, error) {
 	return query, nil
 }
 func (q *OrganisationQuery) GetSingle() (*OrgLevelOrganisation, error) {
-
-	query, err := q.get()
-	if err != nil {
-		return nil, err
+	if q.query == nil {
+		if _, err := q.Build(); err != nil {
+			return nil, err
+		}
 	}
 	var out OrgLevelOrganisation
-
-	if err := query.DecodeJsonBody(&out); err != nil {
-		return nil, err
-	}
-
-	return &out, nil
+	err := q.query.Get(&out)
+	return &out, err
 }

@@ -52,32 +52,13 @@ func (q *D2CAgentQuery) Build() (*D2CAgentQuery, error) {
 	q.query = query
 	return q, nil
 }
-
-func (q *D2CAgentQuery) get() (*apihelper.ApiQuery, error) {
+func (q *D2CAgentQuery) GetSingle() (*ClientLevelDirect2CloudAgentToken, error) {
 	if q.query == nil {
 		if _, err := q.Build(); err != nil {
 			return nil, err
 		}
 	}
-
-	query, err := q.query.Call()
-	if !query.ResponsOK() {
-		return nil, err
-	}
-	return query, nil
-
-}
-func (q *D2CAgentQuery) GetSingle() (*ClientLevelDirect2CloudAgentToken, error) {
-	query, err := q.get()
-	if err != nil {
-		return nil, err
-	}
-
 	var out ClientLevelDirect2CloudAgentToken
-
-	if err := query.DecodeJsonBody(&out); err != nil {
-		return nil, err
-	}
-
-	return &out, nil
+	err := q.query.Get(&out)
+	return &out, err
 }

@@ -109,31 +109,25 @@ func (q *VaultsQuery) get() (*apihelper.ApiQuery, error) {
 }
 
 func (q *VaultsQuery) GetAll() ([]OrgLevelVault, error) {
-	query, err := q.get()
-	if err != nil {
-		return nil, err
+	if q.query == nil {
+		if _, err := q.Build(); err != nil {
+			return nil, err
+		}
 	}
-
 	var out []OrgLevelVault
-	if err := query.DecodeJsonBody(&out); err != nil {
-		return nil, err
-	}
-
-	return out, nil
+	err := q.query.Get(&out)
+	return out, err
 }
 
 func (q *VaultsQuery) GetSingle() (*OrgLevelVault, error) {
-	query, err := q.get()
-	if err != nil {
-		return nil, err
+	if q.query == nil {
+		if _, err := q.Build(); err != nil {
+			return nil, err
+		}
 	}
-
 	var out OrgLevelVault
-	if err := query.DecodeJsonBody(&out); err != nil {
-		return nil, err
-	}
-
-	return &out, nil
+	err := q.query.Get(&out)
+	return &out, err
 }
 
 type VaultThresholdConnectivityQuery struct {
@@ -172,16 +166,7 @@ func (q *VaultThresholdConnectivityQuery) GetSingle() (*VaultThresholdBody, erro
 			return nil, err
 		}
 	}
-
-	query, err := q.query.Call()
-	if !query.ResponsOK() {
-		return nil, err
-	}
-
 	var out VaultThresholdBody
-	if err := query.DecodeJsonBody(&out); err != nil {
-		return nil, err
-	}
-
-	return &out, nil
+	err := q.query.Get(&out)
+	return &out, err
 }
