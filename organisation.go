@@ -1,14 +1,14 @@
 package axcient
 
-type OrganisationQuery struct {
-	ac *Axcient
-}
+// type OrganisationQuery struct {
+// 	ac *Axcient
+// }
 
-func newOrganisationQuery(ac *Axcient) *OrganisationQuery {
-	return &OrganisationQuery{
-		ac: ac,
-	}
-}
+// func newOrganisationQuery(ac *Axcient) *OrganisationQuery {
+// 	return &OrganisationQuery{
+// 		ac: ac,
+// 	}
+// }
 
 // func (q *OrganisationQuery) Build() (*OrganisationQuery, error) {
 

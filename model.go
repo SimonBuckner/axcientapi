@@ -215,25 +215,7 @@ type LocalCacheDetails struct {
 	VerificationStatus                  string `json:"verification_status"`
 }
 
-type RestorePoint struct {
-	Timestamp      string `json:"timestamp"`
-	InUse          bool   `json:"in_use"`
-	UsageInitiator string `json:"usage_initiator"`
-}
-
 type OrgLevelLatestAutoverifyDetails struct {
-	Id                     string `json:"id"`
-	Timestamp              string `json:"timestamp"`
-	StartTimestamp         string `json:"start_timestamp"`
-	EndTimestamp           string `json:"end_timestamp"`
-	Rp                     string `json:"rp"`
-	Status                 string `json:"status"`
-	ScreenshotUrl          string `json:"screenshot_url"`
-	ScreenshotThumbnailUrl string `json:"screenshot_thumbnail_url"`
-	IsHealthy              bool   `json:"is_healthy"`
-}
-
-type OrgLevelAutoverifyInfo struct {
 	Id                     string `json:"id"`
 	Timestamp              string `json:"timestamp"`
 	StartTimestamp         string `json:"start_timestamp"`
@@ -269,9 +251,9 @@ type JobThresholds struct {
 }
 
 type ThresholdObj struct {
-	Value      string `json:"value"`
-	Enabled    bool   `json:"enabled"`
-	Overridden bool   `json:"oberridden"`
+	Value      int64 `json:"value"`
+	Enabled    bool  `json:"enabled"`
+	Overridden bool  `json:"oberridden"`
 }
 
 type OrgLevelJobResponse OrgLevelJob
@@ -294,15 +276,33 @@ type MachineRestorePoint struct {
 	VaultId       int64          `json:"vault_id"`
 	Status        string         `json:"status"`
 	ErrorMsg      string         `json:"error_msg"`
-	RestorePoints []RestorePoint `json:"restore_points"`
+	RestorePoints []RestorePoint `json:"restore_point"`
 }
 
+type RestorePoint struct {
+	Timestamp      string `json:"timestamp"`
+	InUse          bool   `json:"in_use"`
+	UsageInitiator string `json:"usage_initiator"`
+}
+
+// org_level_machine_autoverify_details
 type OrgLevelMachineAutoverifyDetails struct {
-	VaultDd           int64                             `json:"vault_id"`
-	ApplianceId       int64                             `json:"appliance_id"`
-	AutoverifyDetails []OrgLevelLatestAutoverifyDetails `json:"autoverify_details"`
+	VaultId           int64                    `json:"vault_id"`
+	ApplianceId       int64                    `json:"appliance_id"`
+	AutoverifyDetails []OrgLevelAutoverifyInfo `json:"autoverify_details"`
 }
 
+type OrgLevelAutoverifyInfo struct {
+	Id                     string `json:"id"`
+	Timestamp              string `json:"timestamp"`
+	StartTimestamp         string `json:"start_timestamp"`
+	EndTimestamp           string `json:"end_timestamp"`
+	Rp                     string `json:"rp"`
+	Status                 string `json:"status"`
+	ScreenshotUrl          string `json:"screenshot_url"`
+	ScreenshotThumbnailUrl string `json:"screenshot_thumbnail_url"`
+	IsHealthy              bool   `json:"is_healthy"`
+}
 type ClientLevelDirect2CloudAgentToken struct {
 	TokenId string `json:"token_id"`
 }

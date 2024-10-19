@@ -2,12 +2,18 @@ package axcient
 
 import (
 	"fmt"
-	"net/http"
+
+	"github.com/simonbuckner/axcient/apihelper"
 )
 
 type VaultsQuery struct {
-	*axcientQuery
-	vaultId        *int64
+	api   *AxcientApi
+	query *apihelper.ApiQuery
+
+	// URL Path fields
+	vaultId *int64
+
+	// URL query fields
 	vaultType      *string // Private / Cloud
 	active         *bool
 	withUrl        *bool
@@ -15,10 +21,14 @@ type VaultsQuery struct {
 	includeDevices *bool
 }
 
-func newVaultsQuery(ac *Axcient) *VaultsQuery {
+func newVaultsQuery(api *AxcientApi) *VaultsQuery {
 	return &VaultsQuery{
-		axcientQuery: newAxcientQuery(ac),
+		api: api,
 	}
+}
+func (q *VaultsQuery) SelectByVaultId(vaultId int64) *VaultsQuery {
+	q.vaultId = &vaultId
+	return q
 }
 
 func (q *VaultsQuery) SetPublicVault() *VaultsQuery {
@@ -53,11 +63,6 @@ func (q *VaultsQuery) SetIncludeDevices(state bool) *VaultsQuery {
 	return q
 }
 
-func (q *VaultsQuery) SelectByVaultId(vaultId int64) *VaultsQuery {
-	q.vaultId = &vaultId
-	return q
-}
-
 func (q *VaultsQuery) Build() (*VaultsQuery, error) {
 
 	endpoint := "vault"
@@ -65,56 +70,52 @@ func (q *VaultsQuery) Build() (*VaultsQuery, error) {
 		endpoint = fmt.Sprintf("vault/%d", *q.vaultId)
 	}
 
-	if err := q.NewGetQuery(endpoint); err != nil {
-		return nil, err
-	}
+	query := q.api.NewGetQuery(endpoint).
+		SetDumpRequest(false).
+		SetDumpResponse(false)
 
 	if q.vaultType != nil {
-		q.AddUrlQuery("vault_type", *q.vaultType)
+		query.AddUrlQuery("vault_type", *q.vaultType)
 	}
 	if q.active != nil {
-		if *q.active {
-			q.AddUrlQuery("active", "true")
-		} else {
-			q.AddUrlQuery("active", "false")
-		}
+		query.AddUrlQuery("active", apihelper.BooltoString(*q.active))
 	}
 	if q.withUrl != nil {
-		if *q.withUrl {
-			q.AddUrlQuery("with_url", "true")
-		} else {
-			q.AddUrlQuery("with_url", "false")
-		}
+		query.AddUrlQuery("with_url", apihelper.BooltoString(*q.withUrl))
 	}
 	if q.limit != nil {
-		q.AddUrlQuery("limit", fmt.Sprintf("%d", *q.limit))
+		query.AddUrlQuery("limit", fmt.Sprintf("%d", *q.limit))
 	}
 	if q.includeDevices != nil {
-		if *q.includeDevices {
-			q.AddUrlQuery("include_devices", "true")
-		} else {
-			q.AddUrlQuery("include_devices", "false")
-		}
+		query.AddUrlQuery("include_devices", apihelper.BooltoString(*q.includeDevices))
 	}
 
+	q.query = query
 	return q, nil
 }
 
-func (q *VaultsQuery) GetAll() ([]OrgLevelVault, error) {
-	if q.request == nil {
+func (q *VaultsQuery) get() (*apihelper.ApiQuery, error) {
+	if q.query == nil {
 		if _, err := q.Build(); err != nil {
 			return nil, err
 		}
 	}
 
-	res, err := q.ac.ApiHelper.Call(q.request)
-	if err != nil || res.StatusCode != http.StatusOK {
+	query, err := q.query.Call()
+	if !query.ResponsOK() {
+		return nil, err
+	}
+	return query, nil
+}
+
+func (q *VaultsQuery) GetAll() ([]OrgLevelVault, error) {
+	query, err := q.get()
+	if err != nil {
 		return nil, err
 	}
 
 	var out []OrgLevelVault
-
-	if err := q.ac.DecodeJsonBody(res.Body, &out); err != nil {
+	if err := query.DecodeJsonBody(&out); err != nil {
 		return nil, err
 	}
 
@@ -122,20 +123,13 @@ func (q *VaultsQuery) GetAll() ([]OrgLevelVault, error) {
 }
 
 func (q *VaultsQuery) GetSingle() (*OrgLevelVault, error) {
-	if q.request == nil {
-		if _, err := q.Build(); err != nil {
-			return nil, err
-		}
-	}
-
-	res, err := q.ac.ApiHelper.Call(q.request)
-	if err != nil || res.StatusCode != http.StatusOK {
+	query, err := q.get()
+	if err != nil {
 		return nil, err
 	}
 
 	var out OrgLevelVault
-
-	if err := q.ac.DecodeJsonBody(res.Body, &out); err != nil {
+	if err := query.DecodeJsonBody(&out); err != nil {
 		return nil, err
 	}
 
@@ -143,14 +137,17 @@ func (q *VaultsQuery) GetSingle() (*OrgLevelVault, error) {
 }
 
 type VaultThresholdConnectivityQuery struct {
-	*axcientQuery
+	api   *AxcientApi
+	query *apihelper.ApiQuery
+
+	// URL Path fields
 	vaultId *int64
 }
 
-func newVaultThresholdConnectivityQuery(ac *Axcient, vaultId int64) *VaultThresholdConnectivityQuery {
+func newVaultThresholdConnectivityQuery(api *AxcientApi, vaultId int64) *VaultThresholdConnectivityQuery {
 	return &VaultThresholdConnectivityQuery{
-		axcientQuery: newAxcientQuery(ac),
-		vaultId:      &vaultId,
+		api:     api,
+		vaultId: &vaultId,
 	}
 }
 
@@ -161,28 +158,28 @@ func (q *VaultThresholdConnectivityQuery) Build() (*VaultThresholdConnectivityQu
 	}
 	endpoint := fmt.Sprintf("vault/%d/threshold/connectivity", *q.vaultId)
 
-	if err := q.NewGetQuery(endpoint); err != nil {
-		return nil, err
-	}
+	query := q.api.NewGetQuery(endpoint).
+		SetDumpRequest(false).
+		SetDumpResponse(true)
 
+	q.query = query
 	return q, nil
 }
 
 func (q *VaultThresholdConnectivityQuery) GetSingle() (*VaultThresholdBody, error) {
-	if q.request == nil {
+	if q.query == nil {
 		if _, err := q.Build(); err != nil {
 			return nil, err
 		}
 	}
 
-	res, err := q.ac.ApiHelper.Call(q.request)
-	if err != nil || res.StatusCode != http.StatusOK {
+	query, err := q.query.Call()
+	if !query.ResponsOK() {
 		return nil, err
 	}
 
 	var out VaultThresholdBody
-
-	if err := q.ac.DecodeJsonBody(res.Body, &out); err != nil {
+	if err := query.DecodeJsonBody(&out); err != nil {
 		return nil, err
 	}
 

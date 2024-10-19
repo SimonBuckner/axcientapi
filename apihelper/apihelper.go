@@ -6,77 +6,134 @@ import (
 	"io"
 	"net/http"
 	"net/http/httputil"
-
-	"github.com/gookit/goutil/dump"
+	"net/url"
 )
 
 type ApiHelper struct {
-	baseUrl      string
-	headers      http.Header
-	dumpRequests bool
+	baseUrl string
+	headers http.Header
 }
 
-func NewApiHelper(baseUrl string, dumpRequests bool) *ApiHelper {
+func NewApiHelper(baseUrl string) *ApiHelper {
+
 	return &ApiHelper{
-		baseUrl:      baseUrl,
-		headers:      make(http.Header),
-		dumpRequests: dumpRequests,
+		baseUrl: baseUrl,
+		headers: make(http.Header),
 	}
 }
 
-func (api *ApiHelper) SetAuthHeader(key, value string) {
+func (api *ApiHelper) SetDefaultHeader(key, value string) *ApiHelper {
 	api.headers.Set(key, value)
+	return api
 }
 
-func (api *ApiHelper) SetDefaultHeader(key, value string) {
+func (api *ApiHelper) SetAuthHeader(key, value string) *ApiHelper {
 	api.headers.Set(key, value)
+	return api
 }
 
-func (api *ApiHelper) NewGetQuery(endpoint string) (*http.Request, error) {
+func (api *ApiHelper) NewGetQuery(endpoint string) *ApiQuery {
+	query := api.newApiQuery(http.MethodGet, endpoint)
+	// query := ApiQuery{
+	// 	ApiHelper: api,
+	// }
+	// url := api.baseUrl + endpoint
+	// req, err := http.NewRequest(http.MethodGet, url, nil)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// req.Header = api.headers
+	// api.request = req
+	return query
+}
 
-	url := api.baseUrl + endpoint
-	req, err := http.NewRequest(http.MethodGet, url, nil)
-	if err != nil {
-		return nil, err
+type ApiQuery struct {
+	request          *http.Request
+	response         *http.Response
+	urlQuery         url.Values
+	dumpRequest      bool
+	dumpResponse     bool
+	dumpResponseBody bool
+}
+
+func (api *ApiHelper) newApiQuery(method, endpoint string) *ApiQuery {
+	urlPath, err := url.JoinPath(api.baseUrl, endpoint)
+	PanicOnError("Cannout build query URL", err)
+
+	req, err := http.NewRequest(method, urlPath, nil)
+	PanicOnError("Cannot build request", err)
+
+	query := ApiQuery{
+		request:  req,
+		urlQuery: url.Values{},
 	}
-	req.Header = api.headers
-	return req, nil
+	query.request.Header = api.headers
+	return &query
 }
 
-func (api *ApiHelper) Call(req *http.Request) (*http.Response, error) {
-	if api.dumpRequests {
-		dump, err := httputil.DumpRequestOut(req, false)
-		if err != nil {
-			return nil, err
-		}
-		fmt.Printf("\nDump request:\n %q\n", dump)
+func (query *ApiQuery) AddUrlQuery(key, value string) *ApiQuery {
+	query.urlQuery.Add(key, value)
+	return query
+}
+
+func (query *ApiQuery) SetDumpRequest(state bool) *ApiQuery {
+	query.dumpRequest = state
+	return query
+}
+
+func (query *ApiQuery) SetDumpResponse(state bool) *ApiQuery {
+	query.dumpResponse = state
+	return query
+}
+
+func (query *ApiQuery) SetDumpResponseBody(state bool) *ApiQuery {
+	query.dumpResponseBody = state
+	return query
+}
+
+func (query *ApiQuery) Call() (*ApiQuery, error) {
+	if query.request == nil {
+		return nil, fmt.Errorf("Please build the request before calling it")
 	}
-	return http.DefaultClient.Do(req)
+	if query.dumpRequest {
+		query.DumpRequest()
+	}
+	res, err := http.DefaultClient.Do(query.request)
+	query.response = res
+	if query.dumpResponse {
+		query.DumpRespone(query.dumpResponseBody)
+	}
+
+	return query, err
 }
 
-func (api *ApiHelper) DecodeJsonBody(body io.Reader, out any) error {
+func (query *ApiQuery) DecodeJsonBody(out any) error {
 
-	content, err := io.ReadAll(body)
+	content, err := io.ReadAll(query.response.Body)
 	if err != nil {
 		return err
 	}
 	return json.Unmarshal(content, out)
 }
 
-func (api *ApiHelper) DumpRequest(req *http.Request) {
-	out, err := httputil.DumpRequestOut(req, false)
+func (query *ApiQuery) DumpRequest() {
+	out, err := httputil.DumpRequestOut(query.request, false)
 	if err != nil {
 		panic(err)
 	}
-	dump.Println(out)
+	fmt.Println(string(out))
 	fmt.Println()
 }
 
-func (api *ApiHelper) DumpRespone(res *http.Response) {
-	out, err := httputil.DumpResponse(res, false)
+func (query *ApiQuery) DumpRespone(dumpBody bool) {
+	out, err := httputil.DumpResponse(query.response, dumpBody)
 	if err != nil {
 		panic(err)
 	}
-	dump.Println(out)
+	fmt.Println(string(out))
 	fmt.Println()
+}
+
+func (query *ApiQuery) ResponsOK() bool {
+	return query.response != nil && query.response.StatusCode == http.StatusOK
 }
