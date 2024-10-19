@@ -23,9 +23,9 @@ func main() {
 
 	baseUrl := os.Getenv("BASE_URL")
 	apiKey := os.Getenv("API_KEY")
-	// vaultId := apihelper.StringtoI64(os.Getenv("VAULT_ID"))
-	// clientId := apihelper.StringtoI64(os.Getenv("CLIENT_ID"))
-	deviceId := apihelper.StringtoI64(os.Getenv("DEVICE_ID"))
+	vaultId := apihelper.StringtoI64(os.Getenv("VAULT_ID"))
+	clientId := apihelper.StringtoI64(os.Getenv("CLIENT_ID"))
+	// deviceId := apihelper.StringtoI64(os.Getenv("DEVICE_ID"))
 
 	axcient := axcient.NewAxcientApi(baseUrl, true, true)
 	axcient.Authenticate(apiKey)
@@ -111,13 +111,33 @@ func main() {
 	// }
 	// dump.Print(autoverify)
 
-	printBanner("Get Single Device Restore Points")
+	// printBanner("Get Single Device Restore Points")
 
-	restorePoints, err := axcient.GetDeviceRestorePoints().SelectByDeviceId(deviceId).GetAll()
+	// restorePoints, err := axcient.GetDeviceRestorePoints().SelectByDeviceId(deviceId).GetAll()
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// dump.Print(restorePoints)
+
+	printBanner("Get Organisation Details")
+
+	org, err := axcient.GetOrganisation().GetSingle()
 	if err != nil {
 		panic(err)
 	}
-	dump.Print(restorePoints)
+	dump.Print(org)
+
+	printBanner("Get Organisation Details")
+
+	d2c, err := axcient.GetD2CAgent().
+		SelectByClientId(clientId).
+		SelectByVaultId(vaultId).
+		GetSingle()
+
+	if err != nil {
+		panic(err)
+	}
+	dump.Print(d2c)
 
 }
 

@@ -34,16 +34,11 @@ func (api *ApiHelper) SetAuthHeader(key, value string) *ApiHelper {
 
 func (api *ApiHelper) NewGetQuery(endpoint string) *ApiQuery {
 	query := api.newApiQuery(http.MethodGet, endpoint)
-	// query := ApiQuery{
-	// 	ApiHelper: api,
-	// }
-	// url := api.baseUrl + endpoint
-	// req, err := http.NewRequest(http.MethodGet, url, nil)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// req.Header = api.headers
-	// api.request = req
+	return query
+}
+
+func (api *ApiHelper) NewPostQuery(endpoint string) *ApiQuery {
+	query := api.newApiQuery(http.MethodPost, endpoint)
 	return query
 }
 

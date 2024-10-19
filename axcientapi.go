@@ -60,7 +60,16 @@ func (api *AxcientApi) GetDeviceRestorePoints() *DeviceRestorePointQuery {
 }
 
 // Appliance Queries
+func (api *AxcientApi) GetAppliance() *ApplianceQuery {
+	return newApplianceQuery(api)
+}
 
-//Organisation Queries
+// Organisation Queries
+func (api *AxcientApi) GetOrganisation() *OrganisationQuery {
+	return newOrganisationQuery(api)
+}
 
-// D21C Agent Queries
+// D2C Agent Queries
+func (api *AxcientApi) GetD2CAgent() *D2CAgentQuery {
+	return newD2CAgentQuery(api)
+}
