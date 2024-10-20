@@ -3,12 +3,12 @@ package axcient
 import (
 	"fmt"
 
-	"github.com/simonbuckner/axcient/apihelper"
+	"github.com/simonbuckner/goquadac"
 )
 
 type DeviceQuery struct {
 	api   *AxcientApi
-	query *apihelper.ApiQuery
+	query *goquadac.ApiQuery
 
 	// URL query fields
 	deviceId *int64
@@ -49,10 +49,10 @@ func (q *DeviceQuery) Build() (*DeviceQuery, error) {
 		SetDumpResponseBody(false)
 
 	if q.limit != nil {
-		query.AddUrlQuery("limit", apihelper.I64toString(*q.limit))
+		query.AddUrlQuery("limit", goquadac.I64toString(*q.limit))
 	}
 	if q.offset != nil {
-		query.AddUrlQuery("offset", apihelper.I64toString(*q.offset))
+		query.AddUrlQuery("offset", goquadac.I64toString(*q.offset))
 	}
 
 	q.query = query
@@ -81,7 +81,7 @@ func (q *DeviceQuery) GetSingle() (*OrgLevelDevice, error) {
 
 type DeviceAutoverifyQuery struct {
 	api   *AxcientApi
-	query *apihelper.ApiQuery
+	query *goquadac.ApiQuery
 
 	// URL query fields
 	deviceId *int64
@@ -113,37 +113,20 @@ func (q *DeviceAutoverifyQuery) Build() (*DeviceAutoverifyQuery, error) {
 	q.query = query
 	return q, nil
 }
-func (q *DeviceAutoverifyQuery) get() (*apihelper.ApiQuery, error) {
+func (q *DeviceAutoverifyQuery) GetAll() ([]OrgLevelMachineAutoverifyDetails, error) {
 	if q.query == nil {
 		if _, err := q.Build(); err != nil {
 			return nil, err
 		}
 	}
-
-	query, err := q.query.Call()
-	if !query.ResponsOK() {
-		return nil, err
-	}
-	return query, nil
-}
-func (q *DeviceAutoverifyQuery) GetAll() ([]OrgLevelMachineAutoverifyDetails, error) {
-
-	query, err := q.get()
-	if err != nil {
-		return nil, err
-	}
 	var out []OrgLevelMachineAutoverifyDetails
-
-	if err := query.DecodeJsonBody(&out); err != nil {
-		return nil, err
-	}
-
-	return out, nil
+	err := q.query.Get(&out)
+	return out, err
 }
 
 type DeviceRestorePointQuery struct {
 	api   *AxcientApi
-	query *apihelper.ApiQuery
+	query *goquadac.ApiQuery
 
 	// URL query fields
 	deviceId *int64

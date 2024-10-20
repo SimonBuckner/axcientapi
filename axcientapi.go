@@ -1,13 +1,13 @@
 package axcient
 
-import "github.com/simonbuckner/axcient/apihelper"
+import "github.com/simonbuckner/goquadac"
 
 type AxcientApi struct {
-	*apihelper.ApiHelper
+	*goquadac.ApiHelper
 }
 
 func NewAxcientApi(baseUrl string, dumpRequest, dumpResponse bool) *AxcientApi {
-	Api := apihelper.NewApiHelper(baseUrl).
+	Api := goquadac.NewApiHelper(baseUrl).
 		SetDefaultHeader("accept", "application/json")
 
 	return &AxcientApi{

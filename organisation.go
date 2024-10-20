@@ -1,10 +1,10 @@
 package axcient
 
-import "github.com/simonbuckner/axcient/apihelper"
+import "github.com/simonbuckner/goquadac"
 
 type OrganisationQuery struct {
 	api   *AxcientApi
-	query *apihelper.ApiQuery
+	query *goquadac.ApiQuery
 
 	// URL query fields
 

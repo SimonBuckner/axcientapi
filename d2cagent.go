@@ -3,12 +3,12 @@ package axcient
 import (
 	"fmt"
 
-	"github.com/simonbuckner/axcient/apihelper"
+	"github.com/simonbuckner/goquadac"
 )
 
 type D2CAgentQuery struct {
 	api   *AxcientApi
-	query *apihelper.ApiQuery
+	query *goquadac.ApiQuery
 
 	// URL Path fields
 	clientId *int64

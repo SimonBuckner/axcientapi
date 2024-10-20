@@ -3,12 +3,12 @@ package axcient
 import (
 	"fmt"
 
-	"github.com/simonbuckner/axcient/apihelper"
+	"github.com/simonbuckner/goquadac"
 )
 
 type ApplianceQuery struct {
 	api   *AxcientApi
-	query *apihelper.ApiQuery
+	query *goquadac.ApiQuery
 
 	// URL Path fields
 	applianceId *int64
@@ -58,7 +58,7 @@ func (q *ApplianceQuery) Build() (*ApplianceQuery, error) {
 		SetDumpResponseBody(true)
 
 	if q.includeDevices != nil {
-		query.AddUrlQuery("include_devices", apihelper.BooltoString(*q.includeDevices))
+		query.AddUrlQuery("include_devices", goquadac.BooltoString(*q.includeDevices))
 	}
 	if q.serviceId != nil {
 		query.AddUrlQuery("service_id", *q.serviceId)

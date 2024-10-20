@@ -3,12 +3,12 @@ package axcient
 import (
 	"fmt"
 
-	"github.com/simonbuckner/axcient/apihelper"
+	"github.com/simonbuckner/goquadac"
 )
 
 type VaultsQuery struct {
 	api   *AxcientApi
-	query *apihelper.ApiQuery
+	query *goquadac.ApiQuery
 
 	// URL Path fields
 	vaultId *int64
@@ -78,34 +78,20 @@ func (q *VaultsQuery) Build() (*VaultsQuery, error) {
 		query.AddUrlQuery("vault_type", *q.vaultType)
 	}
 	if q.active != nil {
-		query.AddUrlQuery("active", apihelper.BooltoString(*q.active))
+		query.AddUrlQuery("active", goquadac.BooltoString(*q.active))
 	}
 	if q.withUrl != nil {
-		query.AddUrlQuery("with_url", apihelper.BooltoString(*q.withUrl))
+		query.AddUrlQuery("with_url", goquadac.BooltoString(*q.withUrl))
 	}
 	if q.limit != nil {
 		query.AddUrlQuery("limit", fmt.Sprintf("%d", *q.limit))
 	}
 	if q.includeDevices != nil {
-		query.AddUrlQuery("include_devices", apihelper.BooltoString(*q.includeDevices))
+		query.AddUrlQuery("include_devices", goquadac.BooltoString(*q.includeDevices))
 	}
 
 	q.query = query
 	return q, nil
-}
-
-func (q *VaultsQuery) get() (*apihelper.ApiQuery, error) {
-	if q.query == nil {
-		if _, err := q.Build(); err != nil {
-			return nil, err
-		}
-	}
-
-	query, err := q.query.Call()
-	if !query.ResponsOK() {
-		return nil, err
-	}
-	return query, nil
 }
 
 func (q *VaultsQuery) GetAll() ([]OrgLevelVault, error) {
@@ -132,7 +118,7 @@ func (q *VaultsQuery) GetSingle() (*OrgLevelVault, error) {
 
 type VaultThresholdConnectivityQuery struct {
 	api   *AxcientApi
-	query *apihelper.ApiQuery
+	query *goquadac.ApiQuery
 
 	// URL Path fields
 	vaultId *int64

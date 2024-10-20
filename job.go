@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/simonbuckner/axcient/apihelper"
+	"github.com/simonbuckner/goquadac"
 )
 
 type JobQuery struct {
 	api   *AxcientApi
-	query *apihelper.ApiQuery
+	query *goquadac.ApiQuery
 
 	// URL Path fields
 	clientId *int64
@@ -99,7 +99,7 @@ func (q *JobQuery) GetSingle() (*OrgLevelJobResponse, error) {
 
 type JobHistoryQuery struct {
 	api   *AxcientApi
-	query *apihelper.ApiQuery
+	query *goquadac.ApiQuery
 
 	// URL Path fields
 	clientId *int64
@@ -167,13 +167,13 @@ func (q *JobHistoryQuery) Build() (*JobHistoryQuery, error) {
 		SetDumpResponseBody(true)
 
 	if q.limit != nil {
-		query.AddUrlQuery("limit", apihelper.I64toString(*q.limit))
+		query.AddUrlQuery("limit", goquadac.I64toString(*q.limit))
 	}
 	if q.offset != nil {
-		query.AddUrlQuery("offset", apihelper.I64toString(*q.offset))
+		query.AddUrlQuery("offset", goquadac.I64toString(*q.offset))
 	}
 	if q.startTimeBegin != nil {
-		query.AddUrlQuery("starttime_begin", apihelper.I64toString(*q.startTimeBegin))
+		query.AddUrlQuery("starttime_begin", goquadac.I64toString(*q.startTimeBegin))
 	}
 	q.query = query
 	return q, nil

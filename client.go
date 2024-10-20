@@ -3,12 +3,12 @@ package axcient
 import (
 	"fmt"
 
-	"github.com/simonbuckner/axcient/apihelper"
+	"github.com/simonbuckner/goquadac"
 )
 
 type ClientQuery struct {
 	api   *AxcientApi
-	query *apihelper.ApiQuery
+	query *goquadac.ApiQuery
 
 	// URL Path fields
 	clientId *int64
@@ -44,7 +44,7 @@ func (q *ClientQuery) Build() (*ClientQuery, error) {
 		SetDumpResponse(false)
 
 	if q.includeAppliances != nil {
-		query.AddUrlQuery("include_appliances", apihelper.BooltoString(*q.includeAppliances))
+		query.AddUrlQuery("include_appliances", goquadac.BooltoString(*q.includeAppliances))
 	}
 
 	q.query = query
@@ -74,7 +74,7 @@ func (q *ClientQuery) GetSingle() (*OrgLevelClient, error) {
 
 type ClientDeviceQuery struct {
 	api   *AxcientApi
-	query *apihelper.ApiQuery
+	query *goquadac.ApiQuery
 
 	// URL Path fields
 	clientId *int64
@@ -119,7 +119,7 @@ func (q *ClientDeviceQuery) Build() (*ClientDeviceQuery, error) {
 		query.AddUrlQuery("service_id", *q.serviceId)
 	}
 	if q.direct2Cloud != nil {
-		query.AddUrlQuery("d2c_only", apihelper.BooltoString(*q.direct2Cloud))
+		query.AddUrlQuery("d2c_only", goquadac.BooltoString(*q.direct2Cloud))
 	}
 
 	q.query = query
