@@ -19,11 +19,7 @@ func newOrganisationQuery(api *AxcientApi) *OrganisationQuery {
 
 func (q *OrganisationQuery) Build() (*OrganisationQuery, error) {
 
-	query := q.api.NewGetQuery("organization").
-		SetDumpRequest(true).
-		SetDumpResponse(false).
-		SetDumpResponseBody(false)
-
+	query := q.api.NewGetQuery("organization")
 	q.query = query
 	return q, nil
 }

@@ -43,10 +43,7 @@ func (q *DeviceQuery) Build() (*DeviceQuery, error) {
 		endpoint = fmt.Sprintf("device/%d", *q.deviceId)
 	}
 
-	query := q.api.NewGetQuery(endpoint).
-		SetDumpRequest(true).
-		SetDumpResponse(false).
-		SetDumpResponseBody(false)
+	query := q.api.NewGetQuery(endpoint)
 
 	if q.limit != nil {
 		query.AddUrlQuery("limit", goquadac.I64toString(*q.limit))
@@ -105,11 +102,7 @@ func (q *DeviceAutoverifyQuery) Build() (*DeviceAutoverifyQuery, error) {
 		endpoint = fmt.Sprintf("device/%d/autoverify", *q.deviceId)
 	}
 
-	query := q.api.NewGetQuery(endpoint).
-		SetDumpRequest(true).
-		SetDumpResponse(false).
-		SetDumpResponseBody(false)
-
+	query := q.api.NewGetQuery(endpoint)
 	q.query = query
 	return q, nil
 }
@@ -150,11 +143,7 @@ func (q *DeviceRestorePointQuery) Build() (*DeviceRestorePointQuery, error) {
 		endpoint = fmt.Sprintf("device/%d/restore_point", *q.deviceId)
 	}
 
-	query := q.api.NewGetQuery(endpoint).
-		SetDumpRequest(true).
-		SetDumpResponse(false).
-		SetDumpResponseBody(false)
-
+	query := q.api.NewGetQuery(endpoint)
 	q.query = query
 	return q, nil
 }

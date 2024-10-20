@@ -52,10 +52,7 @@ func (q *ApplianceQuery) Build() (*ApplianceQuery, error) {
 		endpoint = fmt.Sprintf("client/%d/appliance", *q.clientId)
 	}
 
-	query := q.api.NewGetQuery(endpoint).
-		SetDumpRequest(true).
-		SetDumpResponse(true).
-		SetDumpResponseBody(true)
+	query := q.api.NewGetQuery(endpoint)
 
 	if q.includeDevices != nil {
 		query.AddUrlQuery("include_devices", goquadac.BooltoString(*q.includeDevices))

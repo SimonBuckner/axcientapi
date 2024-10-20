@@ -39,9 +39,7 @@ func (q *ClientQuery) Build() (*ClientQuery, error) {
 		endpoint = fmt.Sprintf("client/%d", *q.clientId)
 	}
 
-	query := q.api.NewGetQuery(endpoint).
-		SetDumpRequest(false).
-		SetDumpResponse(false)
+	query := q.api.NewGetQuery(endpoint)
 
 	if q.includeAppliances != nil {
 		query.AddUrlQuery("include_appliances", goquadac.BooltoString(*q.includeAppliances))
@@ -111,9 +109,7 @@ func (q *ClientDeviceQuery) Build() (*ClientDeviceQuery, error) {
 	}
 	endpoint := fmt.Sprintf("client/%d/device", *q.clientId)
 
-	query := q.api.NewGetQuery(endpoint).
-		SetDumpRequest(false).
-		SetDumpResponse(false)
+	query := q.api.NewGetQuery(endpoint)
 
 	if q.serviceId != nil {
 		query.AddUrlQuery("service_id", *q.serviceId)

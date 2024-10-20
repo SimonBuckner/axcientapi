@@ -70,9 +70,7 @@ func (q *VaultsQuery) Build() (*VaultsQuery, error) {
 		endpoint = fmt.Sprintf("vault/%d", *q.vaultId)
 	}
 
-	query := q.api.NewGetQuery(endpoint).
-		SetDumpRequest(false).
-		SetDumpResponse(false)
+	query := q.api.NewGetQuery(endpoint)
 
 	if q.vaultType != nil {
 		query.AddUrlQuery("vault_type", *q.vaultType)
@@ -137,11 +135,7 @@ func (q *VaultThresholdConnectivityQuery) Build() (*VaultThresholdConnectivityQu
 		return nil, fmt.Errorf("vault_id required to query thresholds")
 	}
 	endpoint := fmt.Sprintf("vault/%d/threshold/connectivity", *q.vaultId)
-
-	query := q.api.NewGetQuery(endpoint).
-		SetDumpRequest(false).
-		SetDumpResponse(true)
-
+	query := q.api.NewGetQuery(endpoint)
 	q.query = query
 	return q, nil
 }

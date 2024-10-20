@@ -6,7 +6,7 @@ type AxcientApi struct {
 	*goquadac.ApiHelper
 }
 
-func NewAxcientApi(baseUrl string, dumpRequest, dumpResponse bool) *AxcientApi {
+func NewAxcientApi(baseUrl string) *AxcientApi {
 	Api := goquadac.NewApiHelper(baseUrl).
 		SetDefaultHeader("accept", "application/json")
 

@@ -28,7 +28,7 @@ func main() {
 	deviceId := goquadac.StringtoI64(os.Getenv("DEVICE_ID"))
 	jobId := goquadac.StringtoI64(os.Getenv("JOB_ID"))
 
-	axcient := axcient.NewAxcientApi(baseUrl, true, true)
+	axcient := axcient.NewAxcientApi(baseUrl)
 	axcient.Authenticate(apiKey)
 
 	// -------------------------------------------------------------------------

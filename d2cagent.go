@@ -44,11 +44,7 @@ func (q *D2CAgentQuery) Build() (*D2CAgentQuery, error) {
 
 	endpoint := fmt.Sprintf("client/%d/vault/%d/d2c_agent", *q.clientId, *q.vaultId)
 
-	query := q.api.NewPostQuery(endpoint).
-		SetDumpRequest(true).
-		SetDumpResponse(true).
-		SetDumpResponseBody(true)
-
+	query := q.api.NewPostQuery(endpoint)
 	q.query = query
 	return q, nil
 }

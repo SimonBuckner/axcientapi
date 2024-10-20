@@ -62,12 +62,7 @@ func (q *JobQuery) Build() (*JobQuery, error) {
 	}
 
 	endpoint := client + device + job
-
-	query := q.api.NewGetQuery(endpoint).
-		SetDumpRequest(true).
-		SetDumpResponse(true).
-		SetDumpResponseBody(true)
-
+	query := q.api.NewGetQuery(endpoint)
 	q.query = query
 	return q, nil
 }
@@ -161,10 +156,7 @@ func (q *JobHistoryQuery) Build() (*JobHistoryQuery, error) {
 	}
 
 	endpoint := fmt.Sprintf("client/%d/device/%d/job/%d/history", *q.clientId, *q.deviceId, *q.jobId)
-	query := q.api.NewGetQuery(endpoint).
-		SetDumpRequest(true).
-		SetDumpResponse(true).
-		SetDumpResponseBody(true)
+	query := q.api.NewGetQuery(endpoint)
 
 	if q.limit != nil {
 		query.AddUrlQuery("limit", goquadac.I64toString(*q.limit))

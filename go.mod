@@ -5,7 +5,7 @@ go 1.23.2
 require (
 	github.com/gookit/goutil v0.6.17
 	github.com/joho/godotenv v1.5.1
-	github.com/simonbuckner/goquadac v0.1.0-beta
+	github.com/simonbuckner/goquadac v0.1.1-beta
 )
 
 require (
