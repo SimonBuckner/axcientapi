@@ -1,4 +1,4 @@
-module github.com/simonbuckner/axcient
+module github.com/simonbuckner/axcientapi
 
 go 1.23.2
 

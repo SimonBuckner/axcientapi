@@ -1,4 +1,4 @@
-package axcient
+package axcientapi
 
 import (
 	"fmt"

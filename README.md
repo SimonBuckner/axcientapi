@@ -9,12 +9,12 @@ much a work in progress and should be used with caution.
 To install use.
 
 ```
-go get -u github.com/simonbuckner/axcient
+go get -u github.com/simonbuckner/axcientapi
 ```
 
 For an example of how to build a client with this library, use this project.
 
-- [/cmd/example/main.go](https://github.com/simonbuckner/axcient/cmd/example/main.go)
+- [/cmd/example/main.go](https://github.com/simonbuckner/axcientapi/cmd/example/main.go)
 
 ## Outstanding Tasks
 

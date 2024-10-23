@@ -7,7 +7,7 @@ import (
 
 	"github.com/gookit/goutil/dump"
 	"github.com/joho/godotenv"
-	"github.com/simonbuckner/axcient"
+	"github.com/simonbuckner/axcientapi"
 	"github.com/simonbuckner/goquadac"
 )
 
@@ -28,7 +28,7 @@ func main() {
 	deviceId := goquadac.StringtoI64(os.Getenv("DEVICE_ID"))
 	jobId := goquadac.StringtoI64(os.Getenv("JOB_ID"))
 
-	axcient := axcient.NewAxcientApi(baseUrl)
+	axcient := axcientapi.NewAxcientApi(baseUrl)
 	axcient.Authenticate(apiKey)
 
 	// -------------------------------------------------------------------------
